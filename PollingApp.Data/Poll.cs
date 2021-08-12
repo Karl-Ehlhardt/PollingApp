@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PollingApp.Data
 {
-    class Questions
+    public class Poll
     {
-        [key]
-        public int Id { get; set; }
+        [Key]
+        public int PollId { get; set; }
 
-        [required]
+        [Required]
         public int OwnerId { get; set; }
 
-        [required]
+        [Required]
         public string PollQuestion { get; set; }
 
-        [required]
+        [Required]
         public int PublishFlag { get; set; }
 
-        [required]
+        [Required]
         public int Response_multiFlag { get; set; }
     }
 }

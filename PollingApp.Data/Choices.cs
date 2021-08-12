@@ -11,7 +11,7 @@ namespace PollingApp.Data
     public class Choices
     {
         [Key]
-        public int Id { get; set; }
+        public int ChoiceId { get; set; }
 
         [ForeignKey(nameof(Poll))]
         public int PollId { get; set; }
