@@ -32,7 +32,9 @@ namespace PollingApp.Data
             return new ApplicationDbContext();
         }
 
-        //public DbSet<TBD> TBDs { get; set; }
+        public DbSet<Poll> Polls { get; set; }
+        public DbSet<Response> Responses { get; set; }
+        public DbSet<Choice> Choices { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

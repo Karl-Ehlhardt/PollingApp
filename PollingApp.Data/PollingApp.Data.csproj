@@ -57,10 +57,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Choices.cs" />
+    <Compile Include="Choice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Poll.cs" />
-    <Compile Include="Responses.cs" />
+    <Compile Include="Response.cs" />
     <Compile Include="User\IdentityModels.cs" />
   </ItemGroup>
   <ItemGroup />
