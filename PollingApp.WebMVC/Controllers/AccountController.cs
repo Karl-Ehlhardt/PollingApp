@@ -140,6 +140,19 @@ namespace PollingApp.WebMVC.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+
+            ViewBag.Name = new SelectList(new ApplicationDbContext().Roles
+                                    .ToList(), "Name", "Name");
+
+            //Attempt to make the first user an admin and all others forced to user
+            //if (new ApplicationDbContext().Users.Any())
+            //{
+            //    ViewBag.UserRole = "User";
+
+            //    return View();
+            //}
+
+
             return View();
         }
 
@@ -156,6 +169,7 @@ namespace PollingApp.WebMVC.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await this.UserManager.AddToRoleAsync(user.Id, model.UserRoles);
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -166,6 +180,10 @@ namespace PollingApp.WebMVC.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
+
+                ViewBag.Name = new SelectList(new ApplicationDbContext().Roles
+                                  .ToList(), "Name", "Name");
+
                 AddErrors(result);
             }
 
