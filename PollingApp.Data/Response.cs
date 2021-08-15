@@ -8,9 +8,12 @@ using System.Threading.Tasks;
 
 namespace PollingApp.Data
 {
-    public class Poll
+    public class Response
     {
         [Key]
+        public int ResponseId { get; set; }
+
+        [ForeignKey(nameof(Poll))]
         public int PollId { get; set; }
 
         [Required]
@@ -18,16 +21,10 @@ namespace PollingApp.Data
         [ForeignKey(nameof(ApplicationUserId))]
         public virtual ApplicationUser ApplicationUserDisplay { get; set; }
 
-        //[Required]
+        //[ForeignKey(nameof(User))]
         //public int OwnerId { get; set; }
 
         [Required]
-        public string PollQuestion { get; set; }
-
-        [Required]
-        public bool PublishFlag { get; set; }
-
-        [Required]
-        public int Response_multiFlag { get; set; }// 0 means unlimited responses, 1 and up to max is how many the user can choose
+        public string Selection { get; set; }
     }
 }

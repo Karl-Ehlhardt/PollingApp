@@ -8,18 +8,19 @@ using System.Threading.Tasks;
 
 namespace PollingApp.Data
 {
-    public class Responses
+    public class Choice
     {
         [Key]
-        public int ResponseId { get; set; }
+        public int ChoiceId { get; set; }
 
         [ForeignKey(nameof(Poll))]
         public int PollId { get; set; }
 
-        [ForeignKey(nameof(User))]
-        public int OwnerId { get; set; }
+        [Required]
+        public string Answer { get; set; }
 
         [Required]
-        public String Selection { get; set; }
+        public int Count { get; set; }
+
     }
 }
