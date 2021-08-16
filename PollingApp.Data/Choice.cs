@@ -13,8 +13,9 @@ namespace PollingApp.Data
         [Key]
         public int ChoiceId { get; set; }
 
-        [ForeignKey(nameof(Poll))]
+        [ForeignKey(nameof(Data.Poll))]
         public int PollId { get; set; }
+        public virtual Poll Poll { get; set; }
 
         [Required]
         public string Answer { get; set; }

@@ -22,7 +22,7 @@ namespace PollingApp.WebMVC
 
 
             // In Startup iam creating first Admin Role and creating a default Admin User     
-            if (!roleManager.RoleExists("Admin"))
+           if (!roleManager.RoleExists("Admin"))
             {
 
                 // first we create Admin rool    
