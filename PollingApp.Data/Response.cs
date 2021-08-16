@@ -13,13 +13,12 @@ namespace PollingApp.Data
         [Key]
         public int ResponseId { get; set; }
 
-        [ForeignKey(nameof(Poll))]
+        [ForeignKey(nameof(Data.Poll))]
         public int PollId { get; set; }
+        public virtual Poll Poll { get; set; }
 
         [Required]
-        public string ApplicationUserId { get; set; }
-        [ForeignKey(nameof(ApplicationUserId))]
-        public virtual ApplicationUser ApplicationUserDisplay { get; set; }
+        public Guid OwnerId { get; set; }
 
         //[ForeignKey(nameof(User))]
         //public int OwnerId { get; set; }

@@ -1,23 +1,15 @@
-﻿using System;
+﻿using PollingApp.Models.Choice;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PollingApp.Data
+namespace PollingApp.Models.Poll
 {
-    public class Poll
+    public class PollCreate
     {
-        [Key]
-        public int PollId { get; set; }
-
-        [Required]
-        public Guid OwnerId { get; set; }
-
-        //[Required]
-        //public int OwnerId { get; set; }
 
         [Required]
         public string PollQuestion { get; set; }
@@ -27,6 +19,10 @@ namespace PollingApp.Data
 
         [Required]
         public int ResponseMultiFlag { get; set; }// 0 means unlimited responses, 1 and up to max is how many the user can choose
-        //Response_multiFlag
+
+
+        public IEnumerable<ChoiceCreate> ChoiceCreateList { get; set; }
+
+
     }
 }
