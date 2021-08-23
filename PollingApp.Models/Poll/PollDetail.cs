@@ -8,20 +8,19 @@ using System.Threading.Tasks;
 
 namespace PollingApp.Models.Poll
 {
-    public class PollCreate
+    public class PollDetail
     {
 
-        [Required]
+        public int PollId { get; set; }
+
         public string PollQuestion { get; set; }
 
-        [Required]
         public bool PublishFlag { get; set; }
 
-        [Required]
         public int ResponseMultiFlag { get; set; }// 0 means unlimited responses, 1 and up to max is how many the user can choose
 
 
-        public IList<ChoiceCreate> ChoiceCreateList { get; set; }
+        public IList<ChoiceDetail> ChoiceList { get; set; }
 
 
     }

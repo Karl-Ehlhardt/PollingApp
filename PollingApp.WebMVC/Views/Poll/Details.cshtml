@@ -1,0 +1,57 @@
+﻿@model PollingApp.Models.Poll.PollDetail
+
+@{int index = Model.ChoiceList.Count;}
+
+<div>
+    <h4>PollDetail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PollQuestion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PollQuestion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PublishFlag)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PublishFlag)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResponseMultiFlag)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResponseMultiFlag)
+        </dd>
+
+        @for (int i = 0; i < index; i++)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ChoiceList[i].Answer)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ChoiceList[i].Answer)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ChoiceList[i].Count)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ChoiceList[i].Count)
+            </dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new{ id = Model.PollId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
