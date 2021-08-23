@@ -1,0 +1,95 @@
+﻿@model PollingApp.Models.Poll.PollEdit
+@{int index = Model.ChoiceCreateList.Count;}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>PollEdit</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.PollId, new { htmlAttributes = new { @class = "form-control" } })
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PollQuestion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PollQuestion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PollQuestion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PublishFlag, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.PublishFlag)
+                    @Html.ValidationMessageFor(model => model.PublishFlag, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ResponseMultiFlag, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ResponseMultiFlag, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ResponseMultiFlag, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <h4>Current Choices</h4>
+
+        @for (int i = 0; i < Model.ChoiceEditList.Count; i++)
+        {
+            @Html.HiddenFor(model => model.ChoiceEditList[i].ChoiceId, new { htmlAttributes = new { @class = "form-control" } })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ChoiceEditList[i].Answer, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ChoiceEditList[i].Answer, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ChoiceEditList[i].Answer, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ChoiceEditList[i].Delete, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ChoiceEditList[i].Delete, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        }
+        <!-- Choices! -->
+        <div id="choice-group">
+            @for (int i = 0; i < index; i++)
+            {
+                @Html.Action(actionName: "_CreateChoiceFields", controllerName: "Choice", routeValues: new { index = i })
+            }
+            <h4>New Choices</h4>
+        </div>
+        @Ajax.ActionLink(linkText: "+", actionName: "_CreateChoiceFields", controllerName: "Choice",
+        routeValues: new { index = index },
+        ajaxOptions: new AjaxOptions
+        {
+            InsertionMode = InsertionMode.InsertAfter,
+            UpdateTargetId = "choice-group",
+            OnSuccess = "indexIterate"
+        },
+        htmlAttributes: new { id = "addChoice", @class = "btn btn-default" })
+
+        <!-- A button needs to be added to remove the last item and update the index accordingly  -->
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
