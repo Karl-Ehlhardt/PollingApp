@@ -74,6 +74,65 @@ namespace PollingApp.Services
             return pollDetail;
         }
 
+        //Edit for a poll
+        public async Task<PollEdit> GetByIdEditPoll(int id)
+        {
+            Poll poll =
+               _context
+               .Polls
+               .Single(q => q.PollId == id);
+
+            var choiceQueryEdit =
+                await
+                _context
+                .Choices
+                .Where(q => q.PollId == id)
+                .Select(
+                    q =>
+                    new ChoiceEdit()
+                    {
+                        ChoiceId = q.ChoiceId,
+                        Answer = q.Answer,
+                        Delete = false
+                    }).ToListAsync();
+
+            PollEdit pollEdit =
+                new PollEdit
+                {
+                    PollId = poll.PollId,
+                    PollQuestion = poll.PollQuestion,
+                    PublishFlag = poll.PublishFlag,
+                    ResponseMultiFlag = poll.ResponseMultiFlag,
+                    ChoiceEditList = choiceQueryEdit,
+                    ChoiceCreateList = new List<ChoiceCreate>()
+
+                };
+            return pollEdit;
+
+        }
+
+        //Edit choice to new poll
+        public async Task<bool> UpdatePoll(PollEdit model)
+        {
+
+            Poll poll =
+            _context
+            .Polls
+            .Single(a => a.PollId == model.PollId);
+
+            if (poll.PollQuestion == model.PollQuestion && poll.PublishFlag == model.PublishFlag && poll.ResponseMultiFlag == model.ResponseMultiFlag)
+            {
+                return true;
+            }
+
+            poll.PollQuestion = model.PollQuestion;
+            poll.PublishFlag = model.PublishFlag;
+            poll.ResponseMultiFlag = model.ResponseMultiFlag;
+
+            return await _context.SaveChangesAsync() == 1;
+
+        }
+
     }
 
 }

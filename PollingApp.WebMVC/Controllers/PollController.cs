@@ -73,33 +73,45 @@ namespace PollingApp.WebMVC.Controllers
         }
 
         // GET: Poll/Edit
-        public async Task<ActionResult> Edit(int id)
+        public async Task<ActionResult> Edit(int id)//this will need valadation so you cannot edit a poll that is published, or to the fact once choices are added that is going to be a real problem At some point there could be a reset added
         {
             var service = CreatePollService();
 
-            PollDetail mymodel = await service.GetByIdPoll(id);
+            PollEdit mymodel = await service.GetByIdEditPoll(id);
 
             return View(mymodel);
         }
 
-        // Post: Poll/Edit
-        //public async Task<ActionResult> Edit(PollEdit model)
-        //{
-        //    if (!ModelState.IsValid) return View(model);
+        //Post: Poll/Edit
+        [System.Web.Mvc.HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(PollEdit model)
+        {
+            if (!ModelState.IsValid) return View(model);
 
-        //    var service = CreatePollService();
+            var service = CreatePollService();
 
-        //    if (await service.EditPoll(model))
-        //    {
-        //        ChoiceService choiceService = CreateChoiceService();
-        //        int pollId = await choiceService.EditChoiceFromList(model);
-        //        return RedirectToAction($"Details/{pollId}", "Poll");//Will redriect to the created poll
-        //    };
+            if (await service.UpdatePoll(model))
+            {
+                ChoiceService choiceService = CreateChoiceService();
+                if (!await choiceService.EditChoiceFromList(model))
+                {
+                    ModelState.AddModelError("", "Edited Choices invalid");
 
-        //    ModelState.AddModelError("", "Poll could not be edited");
+                    return View(model);
+                }
+                if (!await choiceService.CreateChoiceFromListEdit(model))
+                {
+                    ModelState.AddModelError("", "New Choices invalid");
 
-        //    return View(model);
-        //    //https://eliot-jones.com/2014/11/mvc-ajax-4
-        //}
+                    return View(model);
+                }
+                return RedirectToAction($"Details/{model.PollId}", "Poll");//Will redriect to the poll
+            };
+
+            ModelState.AddModelError("", "Poll could not be edited");
+
+            return View(model);
+        }
     }
 }
