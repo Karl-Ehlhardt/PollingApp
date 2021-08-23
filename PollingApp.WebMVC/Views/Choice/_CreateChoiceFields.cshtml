@@ -1,0 +1,12 @@
+﻿@model PollingApp.Models.Poll.PollCreate
+@{
+    int i = ViewBag.index ?? 0;
+}
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ChoiceCreateList[i].Answer, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ChoiceCreateList[i].Answer, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ChoiceCreateList[i].Answer, "", new { @class = "text-danger" })
+        </div>
+    </div>

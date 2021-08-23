@@ -1,9 +1,10 @@
 ﻿@model PollingApp.Models.Poll.PollCreate
+@{int index = Model.ChoiceCreateList.Count;}
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
 <div class="form-horizontal">
     <h4>PollCreate</h4>
     <hr />
@@ -33,8 +34,25 @@
             @Html.ValidationMessageFor(model => model.ResponseMultiFlag, "", new { @class = "text-danger" })
         </div>
     </div>
+    <!-- Choices! -->
+    <div id="choice-group">
+        @for (int i = 0; i < index; i++)
+        {
+            @Html.Action(actionName: "_CreateChoiceFields", controllerName: "Choice", routeValues: new { index = i })
+        }
+        <h4>Choices</h4>
+    </div>
+    @Ajax.ActionLink(linkText: "+", actionName: "_CreateChoiceFields", controllerName: "Choice",
+    routeValues: new { index = index },
+    ajaxOptions: new AjaxOptions
+    {
+        InsertionMode = InsertionMode.InsertAfter,
+        UpdateTargetId = "choice-group",
+        OnSuccess = "indexIterate"
+    },
+    htmlAttributes: new { id = "addChoice", @class = "btn btn-default" })
 
-        <input type="text" name="ChoiceCreateList.[0].Answer" value="Curious George" />
+    <!-- A button needs to be added to remove the last item and update the index accordingly  -->
 
 
     <div class="form-group">

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using PollingApp.Models.Choice;
 using PollingApp.Models.Poll;
 using PollingApp.Services;
 using System;
@@ -35,7 +36,8 @@ namespace PollingApp.WebMVC.Controllers
         // GET: Poll/Create
         public async Task<ActionResult> Create()
         {
-            return View();
+            PollCreate newpoll = new PollCreate { ChoiceCreateList = new List<ChoiceCreate>() };
+            return View(newpoll);
         }
 
         // POST: Poll/Create
@@ -50,13 +52,54 @@ namespace PollingApp.WebMVC.Controllers
             if (await service.CreatePoll(model))
             {
                 ChoiceService choiceService = CreateChoiceService();
-                await choiceService.CreateChoiceFromList(model);
-                return RedirectToAction($"Index", "Poll");//Will redriect to the created poll
+                int pollId  = await choiceService.CreateChoiceFromList(model);
+                return RedirectToAction($"Details/{pollId}", "Poll");//Will redriect to the created poll
             };
 
             ModelState.AddModelError("", "Poll could not be added");
 
             return View(model);
+            //https://eliot-jones.com/2014/11/mvc-ajax-4
         }
+
+        // GET: Poll/Details
+        public async Task<ActionResult> Details(int id)
+        {
+            var service = CreatePollService();
+
+            PollDetail mymodel = await service.GetByIdPoll(id);
+
+            return View(mymodel);
+        }
+
+        // GET: Poll/Edit
+        public async Task<ActionResult> Edit(int id)
+        {
+            var service = CreatePollService();
+
+            PollDetail mymodel = await service.GetByIdPoll(id);
+
+            return View(mymodel);
+        }
+
+        // Post: Poll/Edit
+        //public async Task<ActionResult> Edit(PollEdit model)
+        //{
+        //    if (!ModelState.IsValid) return View(model);
+
+        //    var service = CreatePollService();
+
+        //    if (await service.EditPoll(model))
+        //    {
+        //        ChoiceService choiceService = CreateChoiceService();
+        //        int pollId = await choiceService.EditChoiceFromList(model);
+        //        return RedirectToAction($"Details/{pollId}", "Poll");//Will redriect to the created poll
+        //    };
+
+        //    ModelState.AddModelError("", "Poll could not be edited");
+
+        //    return View(model);
+        //    //https://eliot-jones.com/2014/11/mvc-ajax-4
+        //}
     }
 }

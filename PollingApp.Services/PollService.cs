@@ -1,7 +1,9 @@
 ﻿using PollingApp.Data;
+using PollingApp.Models.Choice;
 using PollingApp.Models.Poll;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,6 +40,40 @@ namespace PollingApp.Services
             return await _context.SaveChangesAsync() == 1;
         }
 
+        //Deatils of a poll
+        public async Task<PollDetail> GetByIdPoll(int id)
+        {
+            Poll poll =
+               _context
+               .Polls
+               .Single(q => q.PollId == id);
+
+            var choiceQuery =
+                await
+                _context
+                .Choices
+                .Where(q => q.PollId == id)
+                .Select(
+                    q =>
+                    new ChoiceDetail()
+                    {
+                        Answer = q.Answer,
+                        Count = q.Count
+                    }).ToListAsync();
+
+            PollDetail pollDetail =
+                new PollDetail
+                {
+                    PollId = poll.PollId,
+                    PollQuestion = poll.PollQuestion,
+                    PublishFlag = poll.PublishFlag,
+                    ResponseMultiFlag = poll.ResponseMultiFlag,
+                    ChoiceList = choiceQuery
+
+                };
+            return pollDetail;
+        }
 
     }
+
 }
