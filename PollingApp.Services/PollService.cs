@@ -38,6 +38,26 @@ namespace PollingApp.Services
             return await _context.SaveChangesAsync() == 1;
         }
 
+        //read
+
+        //update
+
+        public bool PublishFlag (PollEdit model)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Polls
+                        .Single(e => e.PollId == model.PollId && e.OwnerId == _userId);
+
+                entity.PollQuestion = model.PollQuestion;
+                entity.PublishFlag = model.PublishFlag;
+                entity.ResponseMultiFlag = model.ResponseMultiFlag;
+
+                return ctx.SaveChanges() == 1;
+            }
+        }
 
     }
 }

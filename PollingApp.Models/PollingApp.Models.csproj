@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Choice\ChoiceCreate.cs" />
     <Compile Include="Poll\PollCreate.cs" />
+    <Compile Include="Poll\PollEdit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
