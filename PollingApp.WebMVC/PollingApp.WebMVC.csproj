@@ -302,6 +302,7 @@
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
     <Content Include="Views\Poll\Details.cshtml" />
     <Content Include="Views\Poll\Edit.cshtml" />
+    <Content Include="Views\Poll\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
