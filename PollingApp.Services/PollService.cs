@@ -111,7 +111,7 @@ namespace PollingApp.Services
 
         }
 
-        //Edit choice to new poll
+        //Edit poll
         public async Task<bool> UpdatePoll(PollEdit model)
         {
 
@@ -131,6 +131,18 @@ namespace PollingApp.Services
 
             return await _context.SaveChangesAsync() == 1;
 
+        }
+
+        public async Task<bool> DeletePoll(int id)
+        {
+            var entity =
+                _context
+                .Polls
+                .Single(e => e.PollId == id);
+
+            _context.Polls.Remove(entity);
+
+            return await _context.SaveChangesAsync() == 1;
         }
 
     }

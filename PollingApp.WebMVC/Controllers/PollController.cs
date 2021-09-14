@@ -46,6 +46,7 @@ namespace PollingApp.WebMVC.Controllers
         public async Task<ActionResult> Create(PollCreate model)
         {
             if (!ModelState.IsValid) return View(model);
+            if (model.ResponseMultiFlag >  model.ChoiceCreateList.Count()) return View(model);
 
             var service = CreatePollService();
 
@@ -112,6 +113,34 @@ namespace PollingApp.WebMVC.Controllers
             ModelState.AddModelError("", "Poll could not be edited");
 
             return View(model);
+        }
+
+        //Add method here VVVV
+        //GET
+        public async Task<ActionResult> Delete(int id)
+        {
+            var service = CreatePollService();
+
+            var model = await service.GetByIdPoll(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteFood(int id)
+        {
+
+            var service = CreatePollService(); 
+
+            if (await service.DeletePoll(id))
+            {
+                return RedirectToAction("Index", "Home");
+            };
+
+            ModelState.AddModelError("", "Poll could not be deleted.");
+
+            return await Delete(id);
         }
     }
 }
